@@ -4,6 +4,7 @@ import app.game.Game;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Created by Phaethon on 21-Jan-17
@@ -18,7 +19,7 @@ public class GameService {
             if (game == null) {
                 try {
                     game = new Game();
-                } catch (IOException e) {
+                } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
                 }
             }

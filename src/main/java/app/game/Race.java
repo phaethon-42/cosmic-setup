@@ -6,8 +6,8 @@ package app.game;
 public class Race {
     private String raceName;
     private String fileName;
-
-    public Race(String raceName, String fileName) {
+    
+    Race(String raceName, String fileName) {
         this.raceName = raceName;
         this.fileName = fileName;
     }

@@ -30,6 +30,14 @@ public class GamePage {
         return "game";
     }
 
+    @RequestMapping("/game/restart")
+    public String restart(HttpSession session) {
+        gameService.stopGame();
+        session.removeAttribute("player");
+        gameService.startGame();
+        return "game";
+    }
+
     @RequestMapping("/game/start")
     public String start() {
         gameService.startGame();
