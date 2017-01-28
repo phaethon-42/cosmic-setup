@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class Game {
     private Set<Player> players;
-    private List<String> availableRaces;
+    private List<Race> availableRaces;
     private int racesPerPlayer = 2;
     private boolean revealed;
     private final Object playerLock = new Object();
@@ -19,33 +19,44 @@ public class Game {
 
     public Game() throws IOException {
         players = new HashSet<Player>();
-        availableRaces = getRaceNames();
+        availableRaces = getRaces();
     }
 
-    private List<String> getRaceNames() throws IOException {
-        List<String> raceNames = new ArrayList<String>();
+    private List<Race> getRaces() throws IOException {
+        List<Race> races = new ArrayList<>();
         ClassPathResource raceDirectory = new ClassPathResource("races");
         File raceDirectoryFile = raceDirectory.getFile();
+        races.addAll(getRacesFromDir("", raceDirectoryFile));
+        return races;
+    }
+
+    private List<Race> getRacesFromDir(String path, File raceDirectoryFile) {
+        List<Race> races = new ArrayList<>();
         if (raceDirectoryFile.isDirectory()) {
-            File[] races = raceDirectoryFile.listFiles();
-            if (races != null) {
-                for (File race : races) {
-                    String name = race.getName();
-                    if (name.contains(".")) {
-                        name = name.substring(0, name.indexOf("."));
+            File[] raceFiles = raceDirectoryFile.listFiles();
+            if (raceFiles != null) {
+                for (File raceFile : raceFiles) {
+                    if (raceFile.isDirectory()) {
+                        races.addAll(getRacesFromDir(path + "/" + raceFile.getName(), raceFile));
+                    } else {
+                        String fileName = raceFile.getName();
+                        String name = fileName;
+                        if (name.contains(".")) {
+                            name = name.substring(0, name.indexOf("."));
+                        }
+                        races.add(new Race(name, path + "/" + fileName));
                     }
-                    raceNames.add(name);
                 }
             }
         }
-        return raceNames;
+        return races;
     }
 
-    public List<String> getAvailableRaces() {
+    public List<Race> getAvailableRaces() {
         return availableRaces;
     }
 
-    public String takeRace() {
+    public Race takeRace() {
         synchronized (racesLock) {
             int raceIndex = (int) (Math.random() * availableRaces.size());
             return availableRaces.remove(raceIndex);

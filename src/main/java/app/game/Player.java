@@ -8,18 +8,18 @@ import java.util.List;
  */
 public class Player {
     private String name;
-    private List<String> races;
+    private List<Race> races;
     private String chosenRace;
 
     public Player(String name, Game game) {
         this.name = name;
-        races = new ArrayList<String>();
+        races = new ArrayList<>();
         for (int i = 0; i < game.getRacesPerPlayer(); ++i) {
             races.add(game.takeRace());
         }
     }
 
-    public List<String> getRaces() {
+    public List<Race> getRaces() {
         return races;
     }
 
