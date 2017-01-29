@@ -71,7 +71,7 @@
     <c:if test="${not empty game}">
         <div>Other players in the game:</div>
         <c:forEach items="${game.players}" var="otherPlayer">
-            <div><c:out value="${otherPlayer.name}"/></div>
+            <div><c:out value="${otherPlayer.name}"/> <c:if test="${not game.revealed and not empty otherPlayer.chosenRace}"> (made a choice) </c:if> </div>
             <c:if test="${game.revealed}">
                 <div><c:out value="${otherPlayer.name}"/>'s choices were</div>
                 <c:forEach items="${otherPlayer.races}" var="race">
