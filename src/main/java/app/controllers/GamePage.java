@@ -35,7 +35,7 @@ public class GamePage {
         gameService.stopGame();
         session.removeAttribute("player");
         gameService.startGame();
-        return "game";
+        return "restart";
     }
 
     @RequestMapping("/game/start")
