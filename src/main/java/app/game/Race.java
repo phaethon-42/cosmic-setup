@@ -7,7 +7,7 @@ public class Race {
     private String raceName;
     private String fileName;
     
-    Race(String raceName, String fileName) {
+    public Race(String raceName, String fileName) {
         this.raceName = raceName;
         this.fileName = fileName;
     }
@@ -23,5 +23,20 @@ public class Race {
     @Override
     public String toString() {
         return raceName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Race)) return false;
+
+        Race race = (Race) o;
+
+        return getRaceName() != null ? getRaceName().equals(race.getRaceName()) : race.getRaceName() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getRaceName() != null ? getRaceName().hashCode() : 0;
     }
 }

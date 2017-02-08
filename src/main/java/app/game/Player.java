@@ -19,6 +19,12 @@ public class Player {
         }
     }
 
+    public Player(String name, String chosenRace, List<Race> races) {
+        this.name = name;
+        this.chosenRace = chosenRace;
+        this.races = races;
+    }
+
     public List<Race> getRaces() {
         return races;
     }

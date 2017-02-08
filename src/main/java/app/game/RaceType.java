@@ -220,4 +220,14 @@ public enum RaceType {
     public String toString() {
         return raceName;
     }
+
+    public static RaceType getByName(String name) {
+        for (RaceType raceType : values()) {
+            if (raceType.getRaceName().equals(name)) {
+                return raceType;
+            }
+        }
+
+        return null;
+    }
 }

@@ -8,6 +8,8 @@ import java.util.*;
  * Created by Phaethon on 21-Jan-17
  */
 public class Game {
+    private long id = 1;
+    private String name = "Game";
     private Set<Player> players;
     private List<Race> availableRaces;
     private int racesPerPlayer = 2;
@@ -20,6 +22,24 @@ public class Game {
         availableRaces = new ArrayList<>();
         for (RaceType raceType : getRaces()) {
             availableRaces.add(new Race(raceType.getRaceName(), raceType.getFileName()));
+        }
+    }
+
+    public Game(long gameId, String gameName, Set<Player> players, int racesPerPlayer, boolean revealed) throws IOException, URISyntaxException {
+        this.id = gameId;
+        this.name = gameName;
+        this.players = players;
+        this.racesPerPlayer = racesPerPlayer;
+        this.revealed = revealed;
+        availableRaces = new ArrayList<>();
+        for (RaceType raceType : getRaces()) {
+            availableRaces.add(new Race(raceType.getRaceName(), raceType.getFileName()));
+        }
+
+        for (Player player : players) {
+            for (Race race : player.getRaces()) {
+                availableRaces.remove(race);
+            }
         }
     }
 
@@ -42,17 +62,21 @@ public class Game {
         return racesPerPlayer;
     }
 
-    public Player addPlayer(Player newPlayer) {
+    public Player addPlayer(String playerName) {
+        Player playerToAdd = null;
         synchronized (playerLock) {
             for (Player existingPlayer : players) {
-                if (existingPlayer.equals(newPlayer)) {
-                    newPlayer = existingPlayer;
+                if (existingPlayer.getName().equals(playerName)) {
+                    playerToAdd = existingPlayer;
                     break;
                 }
             }
-            players.add(newPlayer);
+            if (playerToAdd == null) {
+                playerToAdd = new Player(playerName, this);
+            }
+            players.add(playerToAdd);
         }
-        return newPlayer;
+        return playerToAdd;
     }
 
     public boolean quitPlayer(Player player) {
@@ -95,5 +119,13 @@ public class Game {
 
     public void revealChoices() {
         revealed = true;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

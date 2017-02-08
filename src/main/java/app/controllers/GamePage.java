@@ -48,8 +48,7 @@ public class GamePage {
     public String addPlayer(PlayerCreationInput playerInput, HttpSession session) {
         if (session.getAttribute("player") == null && playerInput != null && playerInput.getName() != null) {
             Game game = gameService.getGame();
-            Player player = new Player(playerInput.getName(), game);
-            player = game.addPlayer(player);
+            Player player = gameService.addPlayer(game, playerInput.getName());
             session.setAttribute("player", player);
         }
         return "game";
@@ -60,7 +59,7 @@ public class GamePage {
         if (session.getAttribute("player") != null && playerInput != null && playerInput.getName() != null) {
             Game game = gameService.getGame();
             Player player = new Player(playerInput.getName(), game);
-            if (game.quitPlayer(player)) {
+            if (gameService.quitPlayer(game, player)) {
                 session.removeAttribute("player");
             }
         }
@@ -69,7 +68,8 @@ public class GamePage {
 
     @RequestMapping(path = "/game/reveal", method = RequestMethod.POST)
     public String reveal() {
-        gameService.getGame().revealChoices();
+        Game game = gameService.getGame();
+        gameService.revealChoices(game);
         return "game";
     }
 
@@ -77,7 +77,7 @@ public class GamePage {
     public String choose(RaceInput race, HttpSession session) {
         if (race != null && race.getName() != null && !getGame().isRevealed()) {
             Player player = getPlayer(session);
-            player.setChosenRace(race.getName());
+            gameService.setChosenRace(gameService.getGame(), player, race.getName());
         }
         return "game";
     }
