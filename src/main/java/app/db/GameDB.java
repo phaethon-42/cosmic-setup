@@ -80,6 +80,11 @@ public class GameDB {
     public void deleteGame(Game game) throws SQLException {
         DBConnection connection = new DBConnection();
         try {
+            if (game.getPlayers() != null) {
+                for (Player p : game.getPlayers()) {
+                    deletePlayer(game, p);
+                }
+            }
             connection.executeDml("DELETE FROM games WHERE GAME_ID = ?", new Object[]{game.getId()});
         } finally {
             connection.close();
