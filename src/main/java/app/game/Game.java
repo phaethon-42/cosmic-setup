@@ -128,4 +128,8 @@ public class Game {
     public String getName() {
         return name;
     }
+
+    public String getRevealPassword() {
+        return "CosmicEnc42";
+    }
 }

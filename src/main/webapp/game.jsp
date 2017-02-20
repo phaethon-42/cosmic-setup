@@ -81,7 +81,8 @@
             </c:if>
         </c:forEach>
         <c:if test="${not game.revealed}">
-            <form:form method="post" action="/game/reveal" onSubmit="return safeToReveal()">
+            <form:form method="post" action="/game/reveal" onSubmit="return safeToReveal()" modelAttribute="revealInput">
+                <span>Password for revealing the game: </span><form:input path="password" type="password"/>
                 <input type="submit" value="Reveal choices"/>
             </form:form>
         </c:if>

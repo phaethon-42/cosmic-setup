@@ -4,6 +4,7 @@ import app.inputBeans.PlayerCreationInput;
 import app.game.Game;
 import app.game.Player;
 import app.inputBeans.RaceInput;
+import app.inputBeans.RevealInput;
 import app.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,9 +68,11 @@ public class GamePage {
     }
 
     @RequestMapping(path = "/game/reveal", method = RequestMethod.POST)
-    public String reveal() {
+    public String reveal(RevealInput input) {
         Game game = gameService.getGame();
-        gameService.revealChoices(game);
+        if (game.getRevealPassword().equals(input.getPassword())) {
+            gameService.revealChoices(game);
+        }
         return "game";
     }
 
@@ -90,6 +93,11 @@ public class GamePage {
     @ModelAttribute(name = "raceInput")
     public RaceInput getRaceInput() {
         return new RaceInput();
+    }
+
+    @ModelAttribute(name = "revealInput")
+    public RevealInput getRevealInput() {
+        return new RevealInput();
     }
 
     @ModelAttribute(name = "player")
