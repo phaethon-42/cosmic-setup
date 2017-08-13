@@ -87,7 +87,7 @@
             </form:form>
         </c:if>
 
-        <form:form method="post" action="/game/restart">
+        <form:form method="post" action="/game/restart" onSubmit="return confirm('Are you sure you want to start a new game?')">
             <input type="submit" value="Start a new game"/>
         </form:form>
     </c:if>
